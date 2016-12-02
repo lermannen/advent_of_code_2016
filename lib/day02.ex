@@ -112,16 +112,47 @@ defmodule Day02 do
   def digit2("D", "R"), do: "D"
   def digit2("D", "L"), do: "D"
 
-  def code(instructions, fun) do
-    ins = String.split(instructions)
-    Enum.reduce(ins, "5", fn(x, acc) -> find_digit(x, acc, fun) end)
-    IO.puts "\n----"
+  defp find_digit(instruction, init, fun) do
+    x = Enum.reduce(String.graphemes(instruction), List.first(init),
+      fn(x, acc) -> fun.(acc, x) end)
+    [x | init]
   end
 
-  defp find_digit(instruction, init, fun) do
-    x = Enum.reduce(String.graphemes(instruction), init,
-      fn(x, acc) -> fun.(acc, x) end)
-    IO.write x
-    x
+  @doc ~S"""
+  You picture a keypad like this:
+
+    1 2 3
+    4 5 6
+    7 8 9
+
+   Suppose your instructions are:
+
+    ULL
+    RRDDD
+    LURDL
+    UUUUD
+
+    - You start at "5" and move up (to "2"), left (to "1"), and left (you can't,
+      and stay on "1"), so the first button is 1.
+    - Starting from the previous button ("1"), you move right twice (to "3") and
+      then down three times (stopping at "9" after two moves and ignoring the
+      third), ending up with 9.
+    - Continuing from "9", you move left, up, right, down, and left, ending
+      with 8.
+    - Finally, you move up four times (stopping at "2"), then down once, ending
+      with 5.
+
+  So, in this example, the bathroom code is 1985.
+
+  ## Examples
+
+      iex> Day02.code("ULL\nRRDDD\nLURDL\nUUUUD", &Day02.digit/2)
+      "1985"
+
+  """
+  def code(instructions, fun) do
+    ins = String.split(instructions)
+    ans = Enum.reduce(ins, ["5"], fn(x, acc) -> find_digit(x, acc, fun) end)
+    Enum.join(List.delete_at(Enum.reverse(ans), 0))
   end
 end
