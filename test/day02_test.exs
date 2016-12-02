@@ -12,12 +12,12 @@ defmodule Day02Test do
     RRDDD
     LURDL
     UUUUD"
-    assert "1985" == Day02.code(instructions)
+    assert "1985" == Day02.code(instructions, &Day02.digit/2)
   end
 
   test "solve" do
     {:ok, file} = File.read("lib/day02.input")
-    Day02.code(file)
-    Day02.code2(file)
+    Day02.code(file, &Day02.digit/2)
+    Day02.code(file, &Day02.digit2/2)
   end
 end
