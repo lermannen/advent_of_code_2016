@@ -13,8 +13,8 @@ defmodule Day04Test do
   end
 
   test "decrypt" do
-    data = Day04.transform("aaaaa-bbb-z-y-x-123[abxyz]")
-    assert "very encrypted name" == Day04.decrypt(%{name: "qzmt-zixmtkozy-ivhz", sector: 343})
+    result = Day04.decrypt(%{name: "qzmt-zixmtkozy-ivhz", sector: 343})
+    assert "very encrypted name" == result
   end
 
   test "solve" do
